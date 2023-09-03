@@ -1,6 +1,10 @@
 const { useState, useEffect } = React
 
 import { bookService } from "../services/book.service.js"
+import { BookFilter } from "../cmps/book-filter.jsx"
+import { BookList } from "../cmps/book-list.jsx"
+import { BookDetails } from "./BookDetails.jsx"
+
 
 // {
 //     "id": "OXeMG8wNskc",
@@ -17,22 +21,51 @@ import { bookService } from "../services/book.service.js"
 
 export function BookIndex() {
 
-    // import all the books from the service
     const [books, setBooks] = useState([])
+    const [filterBy, setFilterBy] = useState(bookService.getDefaultFilter())
+    const [selectedBook, setSelectedBook] = useState(null)
+    console.log(selectedBook, 'selectedBookkkkkkkkkkkkkkkkk');
+
+    // console.log(bookService.getDefaultFilter(), 'getDefaultFilter()');
+    // console.log('filterBy', filterBy);
+    // console.log('books', books);
+    // console.log('selectedBook', selectedBook);
     useEffect(() => {
-        bookService.query()
+        bookService.query(filterBy)
             .then(books => setBooks(books))
-    }, [])
+    }, [filterBy])
+
+    function onSetFilter(filterBy) {
+        console.log('filterBy', filterBy);
+        setFilterBy(prevFilterBy => ({ ...prevFilterBy, ...filterBy }))
+    }
+
+    function onSelectBook(book) {
+        setSelectedBook(book)
+    }
+
+    function onBack() {
+        setSelectedBook(null)
+    }
 
     
     if (!books) return <div>Loading...</div>
 
+    // TODO: Create card for each book 
+    // console.log('booksBefore', books);
     return (
-        <section>
-            <h2>Book Index</h2>
-            <ul>
-                {books.map(book => <li key={book.id}>{book.title}</li>)}
-            </ul>
+        <section className="book-index">
+            {!selectedBook &&
+            <React.Fragment>
+                <h2>Book Index</h2>
+                <BookFilter filterBy={filterBy} onSetFilter={onSetFilter} />
+                <BookList books={books} onSelectBook={setSelectedBook} />
+            </React.Fragment>}
+
+            {selectedBook && 
+            <div className="details-container">
+            <BookDetails book={(selectedBook)} onBack={() => onSelectBook(null)} />
+            </div>}
         </section>
     )
 }
