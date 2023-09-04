@@ -7,7 +7,8 @@ export const utilService = {
     padNum,
     getDayName,
     getMonthName,
-    getRandomInt
+    getRandomInt,
+    getCurrencyIcon
 }
 
 function makeId(length = 6) {
@@ -65,3 +66,16 @@ function getMonthName(date) {
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
+
+function getCurrencyIcon(currency) {
+    switch (currency) {
+        case 'USD':
+            return '$';
+        case 'EUR':
+            return '€';
+        case 'ILS':
+            return '₪';
+        default:
+            return '$';
+    }
+  }
