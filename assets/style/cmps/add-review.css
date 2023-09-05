@@ -1,6 +1,6 @@
 div.stars{
+    display: flex;
     width: 270px;
-    display: inline-block;
   }
   
   input.star{
