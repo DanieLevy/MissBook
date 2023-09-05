@@ -4,7 +4,7 @@ import { LongTxt } from "../cmps/long-text.jsx"
 
 const { getCurrencyIcon } = utilService
 // add support for getting the book id from the route params (url)
-const { useNavigate, useParams } = ReactRouterDOM
+const { useNavigate, useParams, Outlet, Link } = ReactRouterDOM
 const { useState, useEffect } = React
 
 export function BookDetails() {
@@ -92,10 +92,20 @@ export function BookDetails() {
             ))}
           </p>
           <p>
+            <span className="bold">Language: </span>
+            {book.language}
+          </p>
+          <p>
             <span className="bold">Description: </span>
             <LongTxt txt={book.description} />
           </p>
+          <Link to={`/books/${book.id}/add-review`}>Add Review</Link>
           <button onClick={onBack}>Back</button>
+
+          <div>
+            <Outlet />
+          </div>
+          
         </div>
       </section>
     </React.Fragment>

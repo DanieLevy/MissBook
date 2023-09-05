@@ -8,7 +8,7 @@ import { About } from "./pages/About.jsx"
 import { BookDetails } from "./pages/BookDetails.jsx"
 import { AppHeader } from "./cmps/app-header.jsx"
 import { BookEdit } from "./pages/BookEdit.jsx"
-
+import { AddReview } from "./cmps/add-review.jsx"
 export function App() {
   const [page, setPage] = useState("home")
 
@@ -21,7 +21,9 @@ export function App() {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/books" element={<BookIndex />} />
-            <Route path="/books/:bookId" element={<BookDetails />} />
+            <Route path="/books/:bookId" element={<BookDetails />} >
+              <Route path="/books/:bookId/add-review" element={<AddReview />} />
+            </Route>
             <Route path="/books/edit" element={<BookEdit />} />
             <Route path="/books/edit/:bookId" element={<BookEdit />} />
           </Routes>
