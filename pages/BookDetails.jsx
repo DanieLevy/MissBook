@@ -1,20 +1,36 @@
 import { bookService } from "../services/book.service.js"
 import { utilService } from "../services/util.service.js"
 import { LongTxt } from "../cmps/long-text.jsx"
+
 const { getCurrencyIcon } = utilService
-
-
+// add support for getting the book id from the route params (url)
+const { useNavigate, useParams } = ReactRouterDOM
 const { useState, useEffect } = React
 
-export function BookDetails(props) {
-  const bookId = props.book
-  const onBack = props.onBack
-
+export function BookDetails() {
   const [book, setBook] = useState(null)
 
+  const navigate = useNavigate()
+  const params = useParams()
+
   useEffect(() => {
-    bookService.get(bookId).then((book) => setBook(book))
+    loadBook()
   }, [])
+
+  useEffect(() => {
+    loadBook()
+  }, [params.bookId])
+
+  function loadBook() {
+    const id = params.bookId
+    bookService.get(id).then((book) => {
+      setBook(book)
+    })
+  }
+
+  function onBack() {
+    navigate("/books")
+  }
 
   function getPriceClass() {
     return book.listPrice.amount > 150
